@@ -103,3 +103,6 @@ def crearLliga(request):
     
     return render(request,"crearLliga.html",{"form": form, "message": messageError})
 
+
+def editarPartitAdvanced(request):
+    return render(request, "editaPartitAdvanced.html")

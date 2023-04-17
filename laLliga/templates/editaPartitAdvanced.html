@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <select id="lliga">
+        <option hidden>---</option>
+    </select>
+</form>
+    <script>
+        $(document).ready(function() {
+            $.getJSON("/laLliga/api/get_lligues", function(lligues){
+                lligues.lliguesObj.forEach(lliga =>{
+                    $("#lliga").append("<option value = '"+lliga.id+"'>"+lliga.nom_lliga+"</option>")
+                })
+            })
+            $("#lliga").on("change", function() {
+                    id = $("#lliga").val()
+                    $("#selectEquipLocal").remove()
+                    $("#selectEquipVisitant").remove()
+                    $("form").append("<select id='selectEquipLocal'>")
+                    $.getJSON("/laLliga/api/get_equips/"+id, function(equips){
+                        equips.EquipsObj.forEach(equip =>{
+                        $("#selectEquipLocal").append("<option>"+equip.nom_equip+"</option>")
+                        })
+                    })
+                    $("form").append("</select>")
+                    $("form").append("<select id='selectEquipVisitant'>")
+                    $.getJSON("/laLliga/api/get_equips/"+id, function(equips){
+                        equips.EquipsObj.forEach(equip =>{
+                        $("#selectEquipVisitant").append("<option>"+equip.nom_equip+"</option>")
+                        })
+                    })
+                    $("form").append("</select>")
+                })
+        });
+    </script>
+</body>
+</html>
